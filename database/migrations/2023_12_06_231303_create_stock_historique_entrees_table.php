@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('stock_historique_entrees', function (Blueprint $table) {
             $table->id();
-            $table->string('username')->unique();
-            $table->string('password');
-            $table->unsignedInteger('role_fk');
-            $table->boolean('isAdmin')->nullable()->default(false);
-            $table->rememberToken();
-            $table->timestamps(); 
+            $table->integer('article_fk');
+            $table->integer("quantite");
+            $table->timestamps();
         });
     }
 
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('stock_historique_entrees');
     }
 };

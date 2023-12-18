@@ -11,22 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('stock_historique_sorties', function (Blueprint $table) {
             $table->id();
-            $table->string('username')->unique();
-            $table->string('password');
-            $table->unsignedInteger('role_fk');
-            $table->boolean('isAdmin')->nullable()->default(false);
-            $table->rememberToken();
-            $table->timestamps(); 
+            $table->integer('stock_fk');
+            $table->integer("quantite");
+            $table->integer("prixUnitaire");
+            $table->integer("prixTotal");
+            $table->timestamps();
         });
     }
 
     /**
+     *    
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('stock_historique_sorties');
     }
 };

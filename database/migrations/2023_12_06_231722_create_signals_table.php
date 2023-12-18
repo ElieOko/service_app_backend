@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('signals', function (Blueprint $table) {
             $table->id();
-            $table->string('username')->unique();
-            $table->string('password');
-            $table->unsignedInteger('role_fk');
-            $table->boolean('isAdmin')->nullable()->default(false);
-            $table->rememberToken();
-            $table->timestamps(); 
+            $table->text("typeSignal");
+            $table->text("description");
+            $table->integer('user_fk');
+            $table->timestamps();
         });
     }
 
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('signals');
     }
 };
