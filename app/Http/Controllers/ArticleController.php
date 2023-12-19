@@ -38,6 +38,9 @@ class ArticleController extends Controller
     {
         $msg = "Enregistrement réussie avec succès";
         $status = 201;
+        $request->validate([
+            'nom' => 'required|string|unique:articles,nom'
+            ]);
         $dt = json_decode($request->getContent());
         $prix = $dt->prixUnitaire;
         if ( $dt->devise_fk == 1) {
