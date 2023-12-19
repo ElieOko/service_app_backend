@@ -55,9 +55,6 @@ class FacturationController extends Controller
             ]);
             $stock = Stock::find($dt->stock_fk);
             $stock->update(["quantiteSortie"=> $stock->quantiteSortie + $dt->quantite]);
-            return response()->json([
-                "message"=>$stock,
-            ],$status);
             StockHistoriqueSortie::create([
                 "quantite"  => $dt->quantite,
                 "stock_fk"  => $dt->stock_fk,
