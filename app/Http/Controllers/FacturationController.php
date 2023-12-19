@@ -62,7 +62,7 @@ class FacturationController extends Controller
                 "prixTotal"  => $prixTotal,
             ]);
             return response()->json([
-                "facturation"=>Facturation::with("code","stock")->where('code_fk',$dt->code_fk??0)->get(),
+                "facturation"=>Facturation::with("code","stock.article")->where('code_fk',$dt->code_fk??0)->get(),
                 "message"=>$msg,
             ],$status);
         }
