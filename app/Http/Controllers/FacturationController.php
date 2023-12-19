@@ -74,7 +74,7 @@ class FacturationController extends Controller
             else{
                 $msg = "Cette articles dans le stock est en rupture"; 
             }
-            $status = 400;
+            $status = 200;
         } 
             return response()->json([
                 "message"=>$msg,
