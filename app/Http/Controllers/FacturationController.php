@@ -16,7 +16,7 @@ class FacturationController extends Controller
      */
     public function index()
     {
-        $facturation = Facturation::all();
+        $facturation = Facturation::with("stock","code")->orderBy('id', 'desc')->get();
         if($facturation->count() != 0 ){
             return new FacturationCollection($facturation);
         }
