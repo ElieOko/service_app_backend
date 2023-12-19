@@ -64,7 +64,7 @@ class FacturationController extends Controller
             return response()->json([
                 "facturation"=>Facturation::with("code","stock")->where('code_fk',$dt->code_fk??0)->get(),
                 "message"=>$msg,
-            ],$status)
+            ],$status);
         }
         else{
             $msg = "Stock Insufisant pour la sortie de cette articles dans le stock";
