@@ -12,23 +12,27 @@ class UserController extends Controller
     {
         try { 
             //$usr = Auth::user();
+            $adm = false;
             $fields = $request->validate([
             'username' => 'required|string|unique:Users,username',
             'password'=>'required|string'
-        ]);
-        $user = User::create([
-            'username' => $fields['username'],
-            'password' => bcrypt($fields['password']),
-            'role_fk' => 1,
-            'isAdmin' => false
-        ]);
+            ]);
+            if(count(User::all()) < 2){
+                    $adm = true;
+            }
+            $user = User::create([
+                'username' => $fields['username'],
+                'password' => bcrypt($fields['password']),
+                'role_fk' => 1,
+                'isAdmin' => $adm
+            ]);
         // $token_genere = $user->createToken($fields['UserName'])->plainTextToken;
         // $postArray = ['APIToken' => $token_genere]; 
         // $user = User::where('UserName',$fields['UserName'])->update($postArray);
-        $response = [
-            'user' => $user,
-            // 'token' => $token_genere
-        ];  
+            $response = [
+                'user' => $user,
+                // 'token' => $token_genere
+            ];  
              return response($response,201);
         } catch (\Throwable $th) {
             $response = ['message' => $th->getMessage()]; 

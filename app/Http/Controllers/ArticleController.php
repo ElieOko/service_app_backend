@@ -38,12 +38,14 @@ class ArticleController extends Controller
         $msg = "Enregistrement réussie avec succès";
         $status = 201;
         $dt = json_decode($request->getContent());
+        $prix = $dt->prixUnitaire;
         if ( $dt->devise_fk == 1) {
-            # code...
+           $devise = Devise::find(1);
+           $prix =$devise->taux * $dt->prixUnitaire;
         }
         $state_save = Article::create([
                 "nom"  => $dt->nom,
-                "prixUnitaire" => $dt->prixUnitaire,
+                "prixUnitaire" => $prix,
                 "devise_fk" => 2
             ]);
             if(!$state_save){
