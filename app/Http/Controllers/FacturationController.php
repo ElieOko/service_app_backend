@@ -61,6 +61,10 @@ class FacturationController extends Controller
                 "prixUnitaire" => $article->prixUnitaire,
                 "prixTotal"  => $prixTotal,
             ]);
+            return response()->json([
+                "facturation"=>Facturation::with("code","stock")->where('code_fk',$dt->code_fk??0)->get(),
+                "message"=>$msg,
+            ],$status)
         }
         else{
             $msg = "Stock Insufisant pour la sortie de cette articles dans le stock";
@@ -73,7 +77,6 @@ class FacturationController extends Controller
             $status = 400;
         } 
             return response()->json([
-                "facturation"=>Facturation::with("code","stock")->where('code_fk',$dt->code_fk??0)->get(),
                 "message"=>$msg,
             ],$status);
     }
