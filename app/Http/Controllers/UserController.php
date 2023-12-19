@@ -47,7 +47,7 @@ class UserController extends Controller
                 return response(
                     [
                         "message"=>"Utilisateur non trouvé"
-                    ],200
+                    ],400
                 );
             }
             $response = [
