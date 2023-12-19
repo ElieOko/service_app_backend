@@ -76,6 +76,7 @@ class FacturationController extends Controller
             $status = 400;
         } 
             return response()->json([
+                "facturation"=>Facturation::with("code","stock")->where('code_fk',$dt->code_fk??0)->get(),
                 "message"=>$msg,
             ],$status);
     }
