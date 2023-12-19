@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Devise;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use App\Http\Resources\ArticleCollection;
