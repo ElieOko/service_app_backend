@@ -14,7 +14,7 @@ class UserController extends Controller
             //$usr = Auth::user();
             $adm = false;
             $fields = $request->validate([
-            'username' => 'required|string|unique:Users,username',
+            'username' => 'required|string|unique:users,username',
             'password'=>'required|string'
             ]);
             if(count(User::all()) < 2){
