@@ -70,7 +70,7 @@ class DeviseController extends Controller
         $update_data = Devise::find(1);
         $update_data->update([
             'taux' => $dt->taux
-        ])
+        ]);
         $msg = "Enregistrement réussie avec succès";
         $status = 201;
         return response()->json([
