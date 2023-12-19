@@ -32,6 +32,7 @@ Route::get('/code/generate',[CodeController::class,'create']);
 // Devise
 Route::get('/devise/all',[DeviseController::class,'index']);
 Route::post('/devise',[DeviseController::class,'store']);
+Route::post('/devise/edit/taux',[DeviseController::class,'edit']);
 // Facturation
 Route::get('/facturation/all',[FacturationController::class,'index']);
 Route::post('/facturation',[FacturationController::class,'store']);

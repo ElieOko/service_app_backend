@@ -63,11 +63,20 @@ class DeviseController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Devise $devise)
+    public function edit(Request $request)
     {
         //
+        $dt = json_decode($request->getContent());
+        $update_data = Devise::find(1);
+        $update_data->update([
+            'taux' => $dt->taux
+        ])
+        $msg = "Enregistrement réussie avec succès";
+        $status = 201;
+        return response()->json([
+            "message"=>$msg,
+        ],$status);
     }
-
     /**
      * Update the specified resource in storage.
      */
