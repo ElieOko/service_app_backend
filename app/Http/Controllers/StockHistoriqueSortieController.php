@@ -13,7 +13,7 @@ class StockHistoriqueSortieController extends Controller
      */
     public function index()
     {
-        $stock = StockHistoriqueSortie::all();
+        $stock = StockHistoriqueSortie::with("stock.article")->orderBy('id', 'desc')->get();
         if($stock->count() != 0 ){
             return new StockHistoriqueSortieCollection($stock);
         }
