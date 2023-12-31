@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Status;
 use Illuminate\Http\Request;
+use App\Http\Resources\StatusCollection;
 
 class StatusController extends Controller
 {
@@ -12,7 +13,13 @@ class StatusController extends Controller
      */
     public function index()
     {
-        //
+        $data = Marketeur::all();
+        if($data->count() != 0 ){
+            return new StatusCollection($data);
+        }
+        return response()->json([
+            "message"=>"Ressource not found",
+        ],400);
     }
 
     /**
@@ -28,7 +35,19 @@ class StatusController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $msg = "Enregistrement réussie avec succès";
+        $status = 201;
+        $dt = json_decode($request->getContent());
+        $state_save = Status::create([
+                "nom"  => $dt->nom,
+            ]);
+            if(!$state_save){
+                $msg = "Echec de l'enregistrement";
+                $status = 400;
+            } 
+            return response()->json([
+                "message"=>$msg,
+            ],$status);
     }
 
     /**

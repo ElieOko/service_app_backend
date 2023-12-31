@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Dette;
 use Illuminate\Http\Request;
+use App\Http\Resources\DetteCollection;
 
 class DetteController extends Controller
 {
@@ -12,7 +13,13 @@ class DetteController extends Controller
      */
     public function index()
     {
-        //
+        $data = Dette::all();
+        if($data->count() != 0 ){
+            return new DetteCollection($data);
+        }
+        return response()->json([
+            "message"=>"Ressource not found",
+        ],400);
     }
 
     /**

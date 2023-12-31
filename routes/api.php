@@ -8,8 +8,12 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\DeviseController;
 use App\Http\Controllers\SignalController;
+use App\Http\Controllers\StatusController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\MarketeurController;
+use App\Http\Controllers\TypeVenteController;
 use App\Http\Controllers\FacturationController;
+use App\Http\Controllers\TypeArticleController;
 use App\Http\Controllers\StockHistoriqueEntreeController;
 use App\Http\Controllers\StockHistoriqueSortieController;
 
@@ -36,9 +40,21 @@ Route::post('/devise/edit/taux',[DeviseController::class,'edit']);
 // Facturation
 Route::get('/facturation/all',[FacturationController::class,'index']);
 Route::post('/facturation',[FacturationController::class,'store']);
+//Marketeur
+Route::get('/marketeur/all',[MarketeurController::class,'index']);
+Route::post('/marketeur',[MarketeurController::class,'store']);
+//Type Article
+Route::get('/type/article/all',[TypeArticleController::class,'index']);
+Route::post('/type/article',[TypeArticleController::class,'store']);
+//Type Vente
+Route::get('/type/vente/all',[TypeVenteController::class,'index']);
+Route::post('/type/vente',[TypeVenteController::class,'store']);
 // Signal
 Route::get('/signal/all',[SignalController::class,'index']);
 Route::post('/signal',[SignalController::class,'store']);
+//Status
+Route::get('/status/all',[StatusController::class,'index']);
+Route::post('/status',[StatusController::class,'store']);
 // Stock
 Route::get('/stock/all',[StockController::class,'index']);
 Route::post('/stock',[StockController::class,'store']);

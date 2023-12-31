@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TypeArticle;
 use Illuminate\Http\Request;
+use App\Http\Resources\TypeArticleCollection;
 
 class TypeArticleController extends Controller
 {
@@ -12,7 +13,13 @@ class TypeArticleController extends Controller
      */
     public function index()
     {
-        //
+        $data = TypeArticle::all();
+        if($data->count() != 0 ){
+            return new TypeArticleCollection($data);
+        }
+        return response()->json([
+            "message"=>"Ressource not found",
+        ],400);
     }
 
     /**
@@ -28,7 +35,19 @@ class TypeArticleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $msg = "Enregistrement réussie avec succès";
+        $status = 201;
+        $dt = json_decode($request->getContent());
+        $state_save = TypeArticle::create([
+                "nom"  => $dt->nom,
+            ]);
+            if(!$state_save){
+                $msg = "Echec de l'enregistrement";
+                $status = 400;
+            } 
+            return response()->json([
+                "message"=>$msg,
+            ],$status);
     }
 
     /**
