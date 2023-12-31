@@ -12,8 +12,10 @@ class TypeArticleCollection extends ResourceCollection
      *
      * @return array<int|string, mixed>
      */
-    public function toArray(Request $request): array
+    public static $wrap = "type_articles";
+    public function toArray(Request $request)
     {
-        return parent::toArray($request);
+        return $this->collection;
+       
     }
 }
