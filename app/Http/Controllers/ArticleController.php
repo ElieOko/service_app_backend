@@ -14,7 +14,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $article = Article::with("devise")->orderBy('id', 'desc')->get();
+        $article = Article::with("devise","type_article")->orderBy('id', 'desc')->get();
         if($article->count() != 0 ){
             return new ArticleCollection($article);
         }
@@ -36,21 +36,35 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        $msg = "Enregistrement réussie avec succès";
-        $status = 201;
+        $msg            = "Enregistrement réussie avec succès";
+        $status         = 201;
         $request->validate([
             'nom' => 'required|string|unique:articles,nom'
             ]);
-        $dt = json_decode($request->getContent());
-        $prix = $dt->prixUnitaire;
-        if ( $dt->devise_fk == 1) {
-           $devise = Devise::find(1);
-           $prix =$devise->taux * $dt->prixUnitaire;
+        $dt             = json_decode($request->getContent());
+        $prix           = $dt->prixUnitaire;
+        $price          = $dt->price_big;
+        $usd_short      = 0;
+        $usd_big        = 0;
+        $devise         = Devise::find(1);
+        if($dt->devise_fk == 1) {
+           $usd_short   = $prix ;
+           $usd_big     = $price ;
+           $prix        = $devise->taux * $dt->prixUnitaire;
+           $price       = $devise->taux * $dt->price_big;
+        }
+        else{
+            $usd_short  = $dt->prixUnitaire / $devise->taux;
+            $usd_big    = $dt->price_big    / $devise->taux;
         }
         $state_save = Article::create([
-                "nom"  => $dt->nom,
-                "prixUnitaire" => $prix,
-                "devise_fk" => 2
+                "nom"               => $dt->nom,
+                "prixUnitaire"      => $prix,
+                "devise_fk"         => 2,
+                "price_big"         => $price,
+                "type_article_fk"   => $dt->type_article_fk,
+                "price_usd_short"   => $usd_short,
+                "price_usd_big"     => $usd_big
             ]);
             if(!$state_save){
                 $msg = "Echec de l'enregistrement";
@@ -80,9 +94,20 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Article $article)
+    public function update(Request $request, int $id)
     {
-        //
+        $dt             = json_decode($request->getContent());
+        $article             = Article::find($id);
+        $current_cloture    = date("Y-m-d H:i:s");
+        $devise         = Devise::find(1);
+        $prix  = $devise->taux * $dt->price_usd_short;
+        $price = $devise->taux * $dt->price_usd_big;
+        $update_data = ["price_usd_short"=> $dt->price_usd_short,"price_usd_big" => $dt->price_usd_big, "nom" => $dt->nom, "prixUnitaire" => $prix  ,"price_big" => $price ];
+        $article->update($update_data);
+        $response =[
+            'message'=>"Success"
+        ];
+        return response($response,201);
     }
 
     /**

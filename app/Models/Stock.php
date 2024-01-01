@@ -16,7 +16,8 @@ class Stock extends Model
     protected $fillable = [
         'article_fk',
         'quantiteEntree',
-        'quantiteSortie'
+        'quantiteSortie',
+        'date_creation'
     ];
     public function article()
     {

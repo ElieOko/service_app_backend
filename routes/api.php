@@ -30,6 +30,7 @@ use App\Http\Controllers\StockHistoriqueSortieController;
 // Article
 Route::get('/article/all',[ArticleController::class,'index']);
 Route::post('/article',[ArticleController::class,'store']);
+Route::post('/article/update/{id}',[ArticleController::class,'update']);
 //Code
 Route::get('/code/all',[CodeController::class,'index']);
 Route::get('/code/generate',[CodeController::class,'create']);

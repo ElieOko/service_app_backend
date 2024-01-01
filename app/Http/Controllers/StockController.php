@@ -38,6 +38,7 @@ class StockController extends Controller
     {
         $msg = "Enregistrement réussie avec succès";
         $status = 201;
+        $day    = date("d-m-Y H:i:s");
         $quantiteIncrement = 0;
         $state_save = false;
         $dt = json_decode($request->getContent());
@@ -54,6 +55,7 @@ class StockController extends Controller
             $state_save = Stock::create([
                 "article_fk"  => $dt->article_fk,
                 "quantiteEntree"  => $dt->quantiteEntree,
+                "date_creation" => $day
             ]);
         }
             StockHistoriqueEntree::create([
