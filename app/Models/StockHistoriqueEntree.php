@@ -11,7 +11,8 @@ class StockHistoriqueEntree extends Model
     use HasFactory;
     protected $fillable = [
         'article_fk',
-        'quantite'
+        'quantite',
+        'date_creation'
     ];
     public function article()
     {

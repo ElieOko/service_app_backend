@@ -17,6 +17,7 @@ class Stock extends Model
         'article_fk',
         'quantiteEntree',
         'quantiteSortie',
+        'contenant',
         'date_creation'
     ];
     public function article()

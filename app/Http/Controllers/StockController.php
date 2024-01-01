@@ -55,12 +55,14 @@ class StockController extends Controller
             $state_save = Stock::create([
                 "article_fk"  => $dt->article_fk,
                 "quantiteEntree"  => $dt->quantiteEntree,
+                "contenant" => $dt->contenant,
                 "date_creation" => $day
             ]);
         }
             StockHistoriqueEntree::create([
                 "article_fk"  => $dt->article_fk,
                 "quantite"  => $dt->quantiteEntree,
+                "date_creation" => $day
             ]);    
             if(!$state_save){
                 $msg = "Echec de l'enregistrement";

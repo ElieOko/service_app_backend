@@ -13,7 +13,8 @@ class StockHistoriqueSortie extends Model
         'stock_fk',
         'quantite',
         'prixUnitaire',
-        'prixTotal'
+        'prixTotal',
+        'date_creation'
     ];
     public function stock()
     {
