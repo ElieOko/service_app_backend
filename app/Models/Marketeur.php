@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Dette;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Marketeur extends Model
 {
@@ -11,4 +12,8 @@ class Marketeur extends Model
     protected $fillable = [
         'nom'
     ];
+    public function dette(): HasMany
+    {
+        return $this->hasMany(Dette::class);
+    }
 }

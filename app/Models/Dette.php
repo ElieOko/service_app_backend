@@ -2,8 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Code;
+use App\Models\Stock;
+use App\Models\Status;
+use App\Models\Marketeur;
+use App\Models\TypeVente;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Dette extends Model
 {
@@ -24,4 +29,24 @@ class Dette extends Model
         'observation',
         'date_creation'
     ];
+    public function stock()
+    {
+        return $this->belongsTo(Stock::class,'stock_fk','id');
+    }
+    public function marketeur()
+    {
+        return $this->belongsTo(Marketeur::class,'marketeur_fk','id');
+    }
+    public function type_vente()
+    {
+        return $this->belongsTo(TypeVente::class,'type_vente_fk','id');
+    }
+    public function code()
+    {
+        return $this->belongsTo(Code::class,'code_fk','id');
+    }
+    public function status()
+    {
+        return $this->belongsTo(Status::class,'status_fk','id');
+    }
 }

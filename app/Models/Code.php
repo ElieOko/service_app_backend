@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Dette;
 use App\Models\Stock;
 use App\Models\CodeStock;
 use Illuminate\Database\Eloquent\Model;
@@ -16,5 +17,9 @@ class Code extends Model
     public function code_stock(): HasMany
     {
         return $this->hasMany(CodeStock::class);
+    }
+    public function dette(): HasMany
+    {
+        return $this->hasMany(Dette::class);
     }
 }

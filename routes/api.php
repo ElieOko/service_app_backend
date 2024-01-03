@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CodeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DetteController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\DeviseController;
 use App\Http\Controllers\SignalController;
@@ -38,6 +39,10 @@ Route::get('/code/generate',[CodeController::class,'create']);
 Route::get('/devise/all',[DeviseController::class,'index']);
 Route::post('/devise',[DeviseController::class,'store']);
 Route::post('/devise/edit/taux',[DeviseController::class,'edit']);
+// Dette
+Route::get('/dette/all',[DetteController::class,'index']);
+Route::post('/dette',[DetteController::class,'store']);
+Route::post('/dette/update/{id}',[DetteController::class,'edit']);
 // Facturation
 Route::get('/facturation/all',[FacturationController::class,'index']);
 Route::post('/facturation',[FacturationController::class,'store']);

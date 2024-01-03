@@ -15,7 +15,9 @@ class Facturation extends Model
         'stock_fk',
         'quantite',
         'prixTotal',
-        'status'
+        'status',
+        "type_vente_fk",
+        "date_creation"
     ];
     public function stock()
     {

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Dette;
 use App\Models\Article;
 use App\Models\CodeStock;
 use App\Models\Facturation;
@@ -27,6 +28,10 @@ class Stock extends Model
     public function stock_historique_entree(): HasMany
     {
         return $this->hasMany(StockHistoriqueEntree::class);
+    }
+    public function dette(): HasMany
+    {
+        return $this->hasMany(Dette::class);
     }
     public function stock_historique_sortie(): HasMany
     {

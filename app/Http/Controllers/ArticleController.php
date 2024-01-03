@@ -96,20 +96,41 @@ class ArticleController extends Controller
      */
     public function update(Request $request, int $id)
     {
-        $dt             = json_decode($request->getContent());
-        $article             = Article::find($id);
+        $dt                 = json_decode($request->getContent());
+        $article            = Article::find($id);
         $current_cloture    = date("Y-m-d H:i:s");
-        $devise         = Devise::find(1);
-        $prix  = $devise->taux * $dt->price_usd_short;
-        $price = $devise->taux * $dt->price_usd_big;
-        $update_data = ["price_usd_short"=> $dt->price_usd_short,"price_usd_big" => $dt->price_usd_big, "nom" => $dt->nom, "prixUnitaire" => $prix  ,"price_big" => $price ];
+        $devise             = Devise::find(1);
+        $short_usd          = 0;
+        $prix               = 0;
+        $big_usd            = 0;
+        $price              = 0;
+        if($dt->prixUnitaire > 0){
+            $prix       =  $dt->prixUnitaire;
+            $short_usd  = $dt->prixUnitaire / $devise->taux;
+        }
+        else{
+            $prix       = $devise->taux * $dt->price_usd_short;
+        }
+        if($dt->price_big > 0) {
+            $price      = $dt->price_big;
+            $big_usd    = $dt->price_big / $devise->taux;
+        }
+        else{
+            $price      = $devise->taux * $dt->price_usd_big;
+        }
+        $update_data    = [
+            "price_usd_short"   => $short_usd,
+            "price_usd_big"     => $big_usd,
+            "nom"               => $dt->nom,
+            "prixUnitaire"      => $prix,
+            "price_big"         => $price 
+        ];
         $article->update($update_data);
         $response =[
-            'message'=>"Success"
+            'message'   =>  "Success"
         ];
         return response($response,201);
     }
-
     /**
      * Remove the specified resource from storage.
      */
