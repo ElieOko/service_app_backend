@@ -6,6 +6,7 @@ use App\Models\Dette;
 use App\Models\Stock;
 use App\Models\Article;
 use Illuminate\Http\Request;
+use App\Models\StockHistoriqueSortie;
 use App\Http\Resources\DetteCollection;
 
 class DetteController extends Controller
@@ -15,7 +16,7 @@ class DetteController extends Controller
      */
     public function index()
     {
-        $data = Dette::all();
+        $data = Dette::with("stock.article","marketeur","type_vente","code","status")->orderBy('id', 'desc')->get();
         if($data->count() != 0 ){
             return new DetteCollection($data);
         }
@@ -47,26 +48,32 @@ class DetteController extends Controller
         if($difQteDispo >= $dt->quantite_emprunter){
             $article    = Article::find($stock->article_fk);
             $price      = $dt->type_vente_fk == 1 ? $article->price_big : $article->prixUnitaire;
+            // return response()->json([
+            //     "montant "=>$article  ,
+            //     "message"=>$msg,
+            // ],$status);
             $prixTotal  = $dt->quantite_emprunter * $price; 
             $state_save = Dette::create([
-                "code_fk"       => $dt->code_fk,
-                "stock_fk"      => $dt->stock_fk,
-                "quantite"      => $dt->quantite,
-                "marketeur_fk"  => $dt->marketeur_fk,
-                "note"          => $dt->note?? "",
-                "type_vente_fk" => $dt->type_vente_fk??0,
-                "date_creation" => $day
+                "code_fk"                   => $dt->code_fk,
+                "stock_fk"                  => $dt->stock_fk,
+                "quantite_emprunter"        => $dt->quantite_emprunter,
+                "marketeur_fk"              => $dt->marketeur_fk,
+                "note"                      => $dt->note?? "",
+                "type_vente_fk"             => $dt->type_vente_fk,
+                "date_creation"             => $day,
+                "status_fk"                 => 1,
+                "montant_final"             => $prixTotal
             ]);
             $stock = Stock::find($dt->stock_fk);
-            $stock->update(["quantiteSortie"=> $stock->quantiteSortie + $dt->quantite]);
+            $stock->update(["quantiteSortie"=> $stock->quantiteSortie + $dt->quantite_emprunter]);
             StockHistoriqueSortie::create([
-                "quantite"  => $dt->quantite,
+                "quantite"  => $dt->quantite_emprunter,
                 "stock_fk"  => $dt->stock_fk,
-                "prixUnitaire" => $article->prixUnitaire,
+                "prixUnitaire" => $dt->type_vente_fk == 1 ? $article->price_big : $article->prixUnitaire ,
                 "prixTotal"  => $prixTotal,
             ]);
             return response()->json([
-                "facturation"=>Facturation::with("code","stock.article")->where('code_fk',$dt->code_fk??0)->get(),
+                "dettes"=>Dette::with("code","stock.article","status","type_vente","marketeur")->where('code_fk',$dt->code_fk??0)->get(),
                 "message"=>$msg,
             ],$status);
         }

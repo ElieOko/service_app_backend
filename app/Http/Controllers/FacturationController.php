@@ -47,26 +47,25 @@ class FacturationController extends Controller
         $state_save = false;
         
         if($difQteDispo >= $dt->quantite){
-            
-            $article = Article::find($stock->article_fk);
+            $article    = Article::find($stock->article_fk);
             $price      = $dt->type_vente_fk == 1 ? $article->price_big : $article->prixUnitaire;
-            $prixTotal = $dt->quantite * $price ; 
+            $prixTotal  = $dt->quantite * $price; 
             $state_save = Facturation::create([
                 "code_fk"       => $dt->code_fk,
                 "stock_fk"      => $dt->stock_fk,
                 "quantite"      => $dt->quantite,
                 "prixTotal"     => $prixTotal,
                 "type_vente_fk" => $dt->type_vente_fk,
-                "date_creation"   => $day
+                "date_creation" => $day
             ]);
 
             $stock = Stock::find($dt->stock_fk);
             $stock->update(["quantiteSortie"=> $stock->quantiteSortie + $dt->quantite]);
             StockHistoriqueSortie::create([
-                "quantite"  => $dt->quantite,
-                "stock_fk"  => $dt->stock_fk,
-                "prixUnitaire" => $article->prixUnitaire,
-                "prixTotal"  => $prixTotal,
+                "quantite"      => $dt->quantite,
+                "stock_fk"      => $dt->stock_fk,
+                "prixUnitaire"  => $price ,
+                "prixTotal"     => $prixTotal,
             ]);
             return response()->json([
                 "facturation"=>Facturation::with("code","stock.article")->where('code_fk',$dt->code_fk??0)->get(),
