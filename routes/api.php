@@ -42,7 +42,7 @@ Route::post('/devise/edit/taux',[DeviseController::class,'edit']);
 // Dette
 Route::get('/dette/all',[DetteController::class,'index']);
 Route::post('/dette',[DetteController::class,'store']);
-Route::post('/dette/update/{id}',[DetteController::class,'edit']);
+Route::post('/dette/update/{id}',[DetteController::class,'update']);
 // Facturation
 Route::get('/facturation/all',[FacturationController::class,'index']);
 Route::post('/facturation',[FacturationController::class,'store']);
@@ -64,6 +64,7 @@ Route::post('/status',[StatusController::class,'store']);
 // Stock
 Route::get('/stock/all',[StockController::class,'index']);
 Route::post('/stock',[StockController::class,'store']);
+Route::post('/stock/update/{id}',[StockController::class,'update']);
 // Stock Historique Entree
 Route::get('/stock/historique/entree',[StockHistoriqueEntreeController::class,'index']);
 Route::post('/stock/historique/entree/add',[StockHistoriqueEntreeController::class,'store']);

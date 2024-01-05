@@ -111,9 +111,43 @@ class DetteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Dette $dette)
+    public function update(Request $request, int $id)
     {
         //
+        $state                      = 201;
+        $msg                        = "Success";
+        $dt                         = json_decode($request->getContent());
+        $dette                      = Dette::find($id);
+        $status                     = 2;
+        $quantite_vendu             = $dt->quantite_vendu??0;
+        $montant_payer              = $dt->montant_payer??0;
+        $quantite_restante          = $dette->quantite_emprunter - $dt->quantite_vendu;
+        $montant_restant            = $dette->montant_final - $montant_payer;
+        if($dt->quantite_vendu > $dette->quantite_emprunter){
+            $msg    = "La quantité vendu ne peut pas être superieure à la quantité empreinter (".$dt->quantite_vendu.">".$dette->quantite_emprunter.")";
+            $state  = 401;
+        }
+        else if($montant_payer > $dette->montant_final){
+            $msg    = "Le montant payé ne peut pas être supérieur au montant final(".$montant_payer.">".$dette->montant_final.")";
+            $state  = 401;
+        }
+        else{
+            if($montant_restant == 0 && $quantite_restante == 0){
+                $status = 3;
+            }
+            $update_data                = [
+                "quantite_vendu"    => $quantite_vendu,
+                "montant_payer"     => $montant_payer,
+                "quantite_restante" => $quantite_restante,
+                "montant_restant"   => $montant_restant,
+                "status_fk"         => $status
+            ];
+            $dette->update($update_data);
+        }
+        $response =[
+            'message' => $msg
+        ];
+        return response($response,$state);
     }
 
     /**
