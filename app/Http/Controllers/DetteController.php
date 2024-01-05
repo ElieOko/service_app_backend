@@ -122,7 +122,7 @@ class DetteController extends Controller
         $quantite_vendu             = $dt->quantite_vendu??0;
         $montant_payer              = $dt->montant_payer??0;
         $quantite_restante          = $dette->quantite_emprunter - $dt->quantite_vendu;
-        $montant_restant            = $dette->montant_final - $montant_payer;
+        $montant_restant            = floatval($dette->montant_final - $montant_payer);
         if($dt->quantite_vendu > $dette->quantite_emprunter){
             $msg    = "La quantité vendu ne peut pas être superieure à la quantité empreinter (".$dt->quantite_vendu.">".$dette->quantite_emprunter.")";
             $state  = 401;
