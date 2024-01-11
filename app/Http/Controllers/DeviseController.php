@@ -72,17 +72,13 @@ class DeviseController extends Controller
         $msg = "Enregistrement réussie avec succès";
         $status = 201;
         $article = Article::all();
-        if(!$state_save){
-            $msg = "Echec de l'enregistrement";
-            $status = 400;
-        } 
         foreach ($article as $item) {
             $data = Article::find($item->id);
             $state_change = [
                 "price_big"=> $data->price_usd_big * $update_data->taux,
                 "prixUnitaire"=>$data->price_usd_short * $update_data->taux
             ];
-            $data->update();
+            $data->update($state_change);
         }
         return response()->json([
             "message"=>$msg,
